@@ -1,0 +1,6 @@
+fuel_id,fuel_type,price_per_gallon
+F001,Diesel,4.73
+F002,Petrol,2.77
+F003,Ethanol,4.78
+F004,Biofuel,3.58
+F005,Kerosene,2.67

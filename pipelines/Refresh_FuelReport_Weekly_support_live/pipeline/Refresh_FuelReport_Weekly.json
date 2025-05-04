@@ -1,0 +1,38 @@
+{
+    "name": "Refresh_FuelReport_Weekly",
+    "properties": {
+        "activities": [
+            {
+                "name": "TriggerDatabricksJob",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "POST",
+                    "headers": {
+                        "Authorization": "Bearer <DATABRICKS_TOKEN>",
+                        "Content-Type": "application/json"
+                    },
+                    "url": "https://adb-4278163537222344.4.azuredatabricks.net/api/2.1/jobs/run-now",
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "job_id": 575290172065053
+                    }
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-05-04T06:12:49Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

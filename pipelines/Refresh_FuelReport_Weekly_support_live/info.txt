@@ -1,0 +1,6 @@
+selected resource name:		Refresh_FuelReport_Weekly
+selected resource type:		pipeline
+workspace name:			fuelsynapsews
+workspace location:		eastus
+subscription id:		31c1fb30-d4fe-49be-a91c-7375c8926fb7
+time of download (UTC):		Sun, 04 May 2025 17:56:46 GMT

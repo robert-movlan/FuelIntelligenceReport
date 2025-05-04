@@ -1,0 +1,23 @@
+{
+    "now": "2025-05-04T17:56:46.859Z",
+    "perfNow": 2239863,
+    "diagnosticCorrelation": "79e13fe9-2adf-43ee-afd5-49d8e237d813",
+    "source": "DownloadSupportFiles",
+    "environment": {
+        "productName": "a365",
+        "buildVersion": "25.0417.02",
+        "environmentType": 9,
+        "resourceName": "fuelsynapsews",
+        "resourceRegion": "eastus",
+        "resourceGroup": "FuelReportRG",
+        "subscriptionId": "31c1fb30-d4fe-49be-a91c-7375c8926fb7",
+        "sessionId": "MBip3F+upU/a37Af9jtsT3",
+        "operationId": "jA68=",
+        "gitType": "live",
+        "loggingKey": "ca9904d9-676a-4711-93cf-5181b251e4e5"
+    },
+    "additionalInfo": {
+        "selectedResource": "Refresh_FuelReport_Weekly",
+        "selectedResourceType": "pipeline"
+    }
+}
