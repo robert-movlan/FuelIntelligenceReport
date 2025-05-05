@@ -1,129 +1,144 @@
-# 📊 Fuel Intelligence Report — GitHub Portfolio Documentation
+# Fuel Intelligence Report — GitHub Portfolio Documentation
 
-## 🔍 Project Overview
+## Project Overview
 
-This project showcases a full end-to-end data integration solution for a fictional fuel logistics company. The architecture integrates:
+This project showcases a full end-to-end data integration and reporting solution for a fictional fuel logistics company. The architecture integrates:
 
-* Azure Data Lake Storage Gen2
-* Azure Databricks (for processing & transformation)
-* Azure Synapse Analytics (for querying and automation)
-* Azure Data Factory (for orchestration)
+- Azure Data Lake Storage Gen2  
+- Azure Databricks (processing and transformation)  
+- Azure Synapse Analytics (querying and automation)  
+- Azure Data Factory (orchestration)  
+- Snowflake (data warehousing and analysis)  
+- Retool (executive dashboard interface)
 
 Future phases will include:
 
-* Snowflake integration
-* Power Apps for executive dashboards
-* Power Automate for alerts
-* Canva/Power BI visuals for stakeholders
+- Power Apps for director/CEO-level dashboards  
+- Power Automate for automated alerts and email triggers  
+- Canva or Power BI for stakeholder-facing visuals
 
 ---
 
-## ✅ Current Status (Phase 1 Completed)
+## Current Status (Phase 1 Completed)
 
-### 🔸 Data Ingestion:
+### Data Ingestion
 
-* ✅ 4 CSV files uploaded to Azure Data Lake under container `fueldata`
+- 4 CSV files uploaded to Azure Data Lake under container `fueldata`:
+  - `clients.csv`
+  - `drivers.csv`
+  - `fuels.csv`
+  - `pump_loads.csv`
 
-  * `clients.csv`
-  * `drivers.csv`
-  * `fuels.csv`
-  * `pump_loads.csv`
+### Databricks Processing
 
-### 🔸 Databricks Processing:
+- Created cluster: `Movlan Aliyev’s Cluster`
+- Notebook `1_ingest_to_datalake.ipynb` performs the following:
+  - Joins and cleans all 4 datasets
+  - Outputs to `/fueldata/final/fuel_report.parquet`
+  - Generates curated datasets:
+    - `/curated/top_drivers.parquet`
+    - `/curated/fuel_cost_per_client.parquet`
+    - `/curated/fuel_type_usage.parquet`
 
-* ✅ Created cluster: `Movlan Aliyev’s Cluster`
-* ✅ Notebook `1_ingest_to_datalake.ipynb` performs the following:
+### Weekly Automation
 
-  * Joins 4 datasets
-  * Cleans and prepares the final data
-  * Writes to: `/fueldata/final/fuel_report.parquet`
-  * Generates 3 curated parquet files:
+- Created Databricks Job to run notebook  
+- Triggered using Azure Synapse Pipeline via Web Activity (Databricks REST API)  
+- Weekly recurrence trigger set inside Synapse pipeline  
 
-    * `/curated/top_drivers.parquet`
-    * `/curated/fuel_cost_per_client.parquet`
-    * `/curated/fuel_type_usage.parquet`
+### Snowflake Integration
 
-### 🔸 Weekly Automation:
+- Table created: `FUEL_DB.PUBLIC.COMPLAINTS`
+- Loaded `complaints.csv` using Web UI file loader  
+- 4 additional SQL scripts created and organized:
+  - `01_create_table.sql`
+  - `02_insert_sample_data.sql`
+  - `03_create_view_clean.sql`
+  - `04_kpi_queries.sql`
+  - `05_advanced_complaint_summary.sql` (complex query for dashboards)
 
-* ✅ Created Databricks Job to run notebook
-* ✅ Triggered via Azure Synapse Pipeline with Web Activity using REST API
-* ✅ Scheduled weekly recurrence trigger using Synapse
+### Retool Dashboard (Live)
 
-### 🔸 Validation:
-
-* ✅ Successfully queried `fuel_report.parquet` in Synapse using `OPENROWSET`
-* ✅ Created 4 SQL scripts:
-
-  * `validate_parquet.sql`
-  * `top_drivers.sql`
-  * `fuel_cost_per_client.sql`
-  * `fuel_type_usage.sql`
-* ✅ Screenshots saved for each pipeline, job, and notebook run
+- Retool URL: [Fuel Intelligence Dashboard](https://aliyevm.retool.com/apps/eea905a4-299d-11f0-952f-e37a8dc5f852/Fuel%20Intelligence%20Dashboard/page1)
+- Live integration with Snowflake using resource connector  
+- Displays complaint table with fields like:
+  - Complaint ID, State, Status, Reason, Days Open
+- Ready for future enhancements: filters, charts, KPIs
 
 ---
 
-## ⚠️ Obstacles Faced & How They Were Resolved
+## Obstacles Faced and Solutions
 
 | Issue                                                       | Solution                                                                                               |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Databricks runtime version 15.4 not compatible with Synapse | Changed to Runtime 13.3 LTS                                                                            |
-| Spark job failing with 9512 error                           | Manually created Databricks Job and triggered via Synapse Web activity instead of direct notebook link |
-| Could not locate `fuel_report.parquet`                      | Found it was in `/fueldata/final/` not `/fueldata/`                                                    |
-| Encoding errors for VARCHAR fields                          | Will handle using UTF-8 collation hint in downstream SQL queries                                       |
-| Storage credential issues                                   | Fixed by registering App in Azure AD and assigning Storage Blob Data Contributor role                  |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Databricks runtime 15.4 not compatible with Synapse         | Downgraded to Runtime 13.3 LTS                                                                           |
+| Spark job failed with 9512 error                            | Used manual Databricks Job and triggered via Synapse REST API instead of direct link                    |
+| `fuel_report.parquet` not found                             | Corrected path from `/fueldata/` to `/fueldata/final/`                                                  |
+| Retool failed to connect to Snowflake initially             | Fixed connector settings and workspace token                                                             |
+| Power Apps access denied                                    | Switched to Retool for now to accelerate dashboard progress                                              |
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
-```
 /Fuel_Intelligence_Report
 │
 ├── data/
-│   ├── clients.csv
-│   ├── drivers.csv
-│   ├── fuels.csv
-│   └── pump_loads.csv
+│ ├── clients.csv
+│ ├── drivers.csv
+│ ├── fuels.csv
+│ └── pump_loads.csv
 │
 ├── notebooks/
-│   └── 1_ingest_to_datalake.ipynb
+│ └── 1_ingest_to_datalake.ipynb
 │
 ├── pipelines/
-│   └── Refresh_FuelReport_Weekly_support_live/ (exported Synapse pipeline)
+│ └── Refresh_FuelReport_Weekly_support_live/
+│
+├── snowflake_queries/
+│ ├── 01_create_table.sql
+│ ├── 02_insert_sample_data.sql
+│ ├── 03_create_view_clean.sql
+│ ├── 04_kpi_queries.sql
+│ └── 05_advanced_complaint_summary.sql
+│
+├── retool_dashboard/
+│ ├── query_snowflake.sql
+│ ├── README.md
+│ └── screenshots/
+│ └── table_view_simple.png
 │
 ├── queries/
-│   ├── validate_parquet.sql
-│   ├── top_drivers.sql
-│   ├── fuel_cost_per_client.sql
-│   └── fuel_type_usage.sql
-│
-├── screenshots/
-│   ├── upload_to_datalake.png
-│   ├── notebook_execution.png
-│   └── job_trigger_synapse.png
+│ ├── validate_parquet.sql
+│ ├── top_drivers.sql
+│ ├── fuel_cost_per_client.sql
+│ └── fuel_type_usage.sql
 │
 ├── readme_docs/
-│   └── Technical_Diary.md 
+│ └── Technical_Diary.md
 │
-└── README.md (this file)
-```
+└── README.md
+
+yaml
+Copy
+Edit
 
 ---
 
-## 🔗 Next Steps
+## Next Steps
 
-* [ ] Create curated Synapse views with aggregations
-* [ ] Load `fuel_report.parquet` into Snowflake
-* [ ] Build Power Apps for CEO
-* [ ] Automate reporting with Power Automate + Canva
-
----
-
-## 👨‍💻 Author
-
-**Movlan Aliyev** — \[[robert.movlan@outlook.com](mailto:robert.movlan@outlook.com)]
-GitHub Portfolio: \[Coming Soon]
+- [ ] Add filters and dynamic visualizations to Retool  
+- [ ] Load processed `fuel_report.parquet` into Snowflake  
+- [ ] Build director dashboard in Power Apps (alternative to Retool)  
+- [ ] Trigger email alerts via Power Automate  
+- [ ] Design a Canva summary page for business reviews  
 
 ---
 
-👉 For full technical documentation, visit: [`readme_docs/Technical_Diary.md`](./readme_docs/Technical_Diary.md)
+## Author
+
+**Movlan Aliyev**  
+Email: robert.movlan@outlook.com  
+GitHub Portfolio: [Coming Soon]
+
+Full logs and documentation can be found in `readme_docs/Technical_Diary.md`
