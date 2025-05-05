@@ -119,10 +119,6 @@ Future phases will include:
 │
 └── README.md
 
-yaml
-Copy
-Edit
-
 ---
 
 ## Next Steps
