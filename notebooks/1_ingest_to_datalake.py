@@ -1,16 +1,20 @@
 # Databricks notebook source
-import os  # ✅ import os first
 
-# ✅ Securely read from environment variables (no hardcoded secrets!)
-storage_account_name = "fuelintelligencestorage"
-container_name = "fueldata"
+# ✅ Load environment variables from .env file
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Automatically loads variables from .env
+
+# ✅ Read secrets and parameters securely
+storage_account_name = os.getenv("STORAGE_ACCOUNT_NAME")
+container_name = os.getenv("CONTAINER_NAME")
 mount_point = f"/mnt/{container_name}"
 
-# 🔐 Read secrets securely
 storage_account_key = os.getenv("AZURE_STORAGE_KEY")
-client_secret = os.getenv("AZURE_CLIENT_SECRET")
+client_secret = os.getenv("AZURE_CLIENT_SECRET")  # Optional if needed for other APIs
 
-# ✅ Set Spark config to allow access to the storage account
+# ✅ Configure Spark to use the secure key
 spark.conf.set(
     f"fs.azure.account.key.{storage_account_name}.blob.core.windows.net",
     storage_account_key
@@ -24,6 +28,7 @@ dbutils.fs.mount(
         f"fs.azure.account.key.{storage_account_name}.blob.core.windows.net": storage_account_key
     }
 )
+
 
 
 # COMMAND ----------
