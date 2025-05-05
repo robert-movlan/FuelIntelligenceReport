@@ -103,7 +103,7 @@ Future phases will include:
 │   └── job_trigger_synapse.png
 │
 ├── readme_docs/
-│   └── Technical_Diary.md  ✅
+│   └── Technical_Diary.md 
 │
 └── README.md (this file)
 ```
